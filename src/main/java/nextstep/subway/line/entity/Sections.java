@@ -34,7 +34,7 @@ public class Sections {
             return;
         }
 
-        Optional<Section> addableAtDownStation = this.canAddableAtDownStation(newSection);
+        Optional<Section> addableAtDownStation = this.findAddableAtDownStation(newSection);
         if (addableAtDownStation.isPresent()) {
             this.addAtDownStation(addableAtDownStation.get(), newSection);
             return;
@@ -177,7 +177,7 @@ public class Sections {
                 .findFirst();
     }
 
-    private Optional<Section> canAddableAtDownStation(final Section newSection) {
+    private Optional<Section> findAddableAtDownStation(final Section newSection) {
         return this.sections.stream()
                 .filter(section -> this.isMatchedForDownStation(newSection, section))
                 .findFirst();
