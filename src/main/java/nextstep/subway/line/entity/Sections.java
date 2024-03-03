@@ -40,7 +40,7 @@ public class Sections {
             return;
         }
 
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Section addition failed. The new section cannot be added at any existing station. Given newSection: " + newSection);
     }
 
     private void addAtDownStation(final Section section, final Section newSection) {
@@ -57,7 +57,7 @@ public class Sections {
             return;
         }
 
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("The new section cannot be added at the specified down station. Given newSection: " + newSection);
     }
 
     private void addAtUpStation(final Section section, final Section newSection) {
@@ -72,12 +72,12 @@ public class Sections {
             return;
         }
 
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("The new section cannot be added at the specified up station. Given newSection: " + newSection);
     }
 
     private void addSectionBeforeExistingDownStation(final Section newSection, final Section section) {
         if (this.isEqualsDistance(newSection, section)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid new section. Section's distance and new section's distance is same.");
         }
 
         final int prevIdx = sections.indexOf(section);
@@ -111,7 +111,7 @@ public class Sections {
 
     private void addSectionAfterExistingUpStation(final Section newSection, final Section section) {
         if (this.isEqualsDistance(newSection, section)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid new section. Section's distance and new section's distance is same.");
         }
 
         final int prevIdx = sections.indexOf(section);
