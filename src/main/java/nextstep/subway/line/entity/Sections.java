@@ -80,8 +80,7 @@ public class Sections {
             throw new IllegalArgumentException();
         }
 
-        final List<Section> newSections = sections;
-        final int prevIdx = newSections.indexOf(section);
+        final int prevIdx = sections.indexOf(section);
         final int distanceDifference = Math.abs(newSection.getDistance() - section.getDistance());
 
         // A-B + C-B -> C-A-B
@@ -93,8 +92,7 @@ public class Sections {
                     , distanceDifference
             );
 
-            newSections.add(prevIdx, adjustedNewSection);
-            sections = newSections;
+            sections.add(prevIdx, adjustedNewSection);
             return;
         }
 
@@ -106,10 +104,9 @@ public class Sections {
                 , distanceDifference
         );
 
-        newSections.remove(section);
-        newSections.add(prevIdx, adjustedSection);
-        newSections.add(prevIdx +1, newSection);
-        sections = newSections;
+        sections.remove(section);
+        sections.add(prevIdx, adjustedSection);
+        sections.add(prevIdx +1, newSection);
     }
 
     private void addSectionAfterExistingUpStation(final Section newSection, final Section section) {
@@ -117,8 +114,7 @@ public class Sections {
             throw new IllegalArgumentException();
         }
 
-        final List<Section> newSections = sections;
-        final int prevIdx = newSections.indexOf(section);
+        final int prevIdx = sections.indexOf(section);
         final int distanceDifference = Math.abs(newSection.getDistance() - section.getDistance());
 
         // A-B + A-C -> A-B-C
@@ -130,8 +126,7 @@ public class Sections {
                     , distanceDifference
             );
 
-            newSections.add(prevIdx +1, adjustedNewSection);
-            sections = newSections;
+            sections.add(prevIdx +1, adjustedNewSection);
             return;
         }
 
@@ -143,10 +138,9 @@ public class Sections {
                 , distanceDifference
         );
 
-        newSections.remove(section);
-        newSections.add(prevIdx, newSection);
-        newSections.add(prevIdx +1, adjustedSection);
-        sections = newSections;
+        sections.remove(section);
+        sections.add(prevIdx, newSection);
+        sections.add(prevIdx +1, adjustedSection);
     }
 
     private boolean isEqualsDistance(final Section newSection, final Section section) {
