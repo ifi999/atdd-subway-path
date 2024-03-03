@@ -47,12 +47,12 @@ public class Sections {
         this.ensureNoDuplicateDownStation(newSection);
 
         // A-B + B-C -> A-B-C
-        if (this.canAddSectionAfterExistingDownStation(newSection, section)) {
+        if (section.canAddSectionAfterExistingDownStation(newSection)) {
             sections.add(sections.indexOf(section) +1, newSection);
             return;
         }
 
-        if (this.canAddSectionBeforeExistingDownStation(newSection, section)) {
+        if (section.canAddSectionBeforeExistingDownStation(newSection)) {
             this.addSectionBeforeExistingDownStation(newSection, section);
             return;
         }
@@ -62,12 +62,12 @@ public class Sections {
 
     private void addAtUpStation(final Section section, final Section newSection) {
         // A-B + C-A -> C-A-B
-        if (this.canAddSectionBeforeExistingUpStation(newSection, section)) {
+        if (section.canAddSectionBeforeExistingUpStation(newSection)) {
             sections.add(sections.indexOf(section), newSection);
             return;
         }
 
-        if (this.canAddSectionAfterExistingUpStation(newSection, section)) {
+        if (section.canAddSectionAfterExistingUpStation(newSection)) {
             this.addSectionAfterExistingUpStation(newSection, section);
             return;
         }
@@ -76,7 +76,7 @@ public class Sections {
     }
 
     private void addSectionBeforeExistingDownStation(final Section newSection, final Section section) {
-        if (this.isEqualsDistance(newSection, section)) {
+        if (section.isEqualsDistance(newSection)) {
             throw new IllegalArgumentException("Invalid new section. Section's distance and new section's distance is same.");
         }
 
@@ -84,7 +84,7 @@ public class Sections {
         final int distanceDifference = Math.abs(newSection.getDistance() - section.getDistance());
 
         // A-B + C-B -> C-A-B
-        if (this.isNewSectionLongerThanExisting(newSection, section)) {
+        if (section.isNewSectionLongerThanExisting(newSection)) {
             final Section adjustedNewSection = new Section(
                     newSection.getLine()
                     , newSection.getUpStation()
@@ -110,7 +110,7 @@ public class Sections {
     }
 
     private void addSectionAfterExistingUpStation(final Section newSection, final Section section) {
-        if (this.isEqualsDistance(newSection, section)) {
+        if (section.isEqualsDistance(newSection)) {
             throw new IllegalArgumentException("Invalid new section. Section's distance and new section's distance is same.");
         }
 
@@ -118,7 +118,7 @@ public class Sections {
         final int distanceDifference = Math.abs(newSection.getDistance() - section.getDistance());
 
         // A-B + A-C -> A-B-C
-        if (this.isNewSectionLongerThanExisting(newSection, section)) {
+        if (section.isNewSectionLongerThanExisting(newSection)) {
             final Section adjustedNewSection = new Section(
                     newSection.getLine()
                     , section.getDownStation()
@@ -143,34 +143,6 @@ public class Sections {
         sections.add(prevIdx +1, adjustedSection);
     }
 
-    private boolean isEqualsDistance(final Section newSection, final Section section) {
-        return newSection.getDistance() == section.getDistance();
-    }
-
-    private boolean isNewSectionLongerThanExisting(final Section newSection, final Section section) {
-        return section.getDistance() < newSection.getDistance();
-    }
-
-    private boolean canAddSectionBeforeExistingDownStation(final Section newSection, final Section section) {
-        return !section.getUpStation().equals(newSection.getUpStation()) &&
-                section.getDownStation().equals(newSection.getDownStation());
-    }
-
-    private boolean canAddSectionAfterExistingDownStation(final Section newSection, final Section section) {
-        return !section.getUpStation().equals(newSection.getDownStation()) &&
-                section.getDownStation().equals(newSection.getUpStation());
-    }
-
-    private boolean canAddSectionAfterExistingUpStation(final Section newSection, final Section section) {
-        return section.getUpStation().equals(newSection.getUpStation()) &&
-                !section.getDownStation().equals(newSection.getDownStation());
-    }
-
-    private boolean canAddSectionBeforeExistingUpStation(final Section newSection, final Section section) {
-        return section.getUpStation().equals(newSection.getDownStation()) &&
-                !section.getDownStation().equals(newSection.getUpStation());
-    }
-
     private Optional<Section> findAddableAtUpStation(final Section newSection) {
         return this.sections.stream()
                 .filter(section -> this.isMatchedForUpStation(newSection, section))
@@ -184,13 +156,13 @@ public class Sections {
     }
 
     private boolean isMatchedForUpStation(final Section newSection, final Section section) {
-        return this.canAddSectionBeforeExistingUpStation(newSection, section)
-                || this.canAddSectionAfterExistingUpStation(newSection, section);
+        return section.canAddSectionBeforeExistingUpStation(newSection)
+                || section.canAddSectionAfterExistingUpStation(newSection);
     }
 
     private boolean isMatchedForDownStation(final Section newSection, final Section section) {
-        return this.canAddSectionBeforeExistingDownStation(newSection, section)
-                || this.canAddSectionAfterExistingDownStation(newSection, section);
+        return section.canAddSectionBeforeExistingDownStation(newSection)
+                || section.canAddSectionAfterExistingDownStation(newSection);
     }
 
     public void removeSection(final Station station) {

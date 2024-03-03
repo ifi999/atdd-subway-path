@@ -37,6 +37,34 @@ public class Section {
         this.distance = distance;
     }
 
+    public boolean isEqualsDistance(final Section newSection) {
+        return this.getDistance() == newSection.getDistance();
+    }
+
+    public boolean isNewSectionLongerThanExisting(final Section newSection) {
+        return this.getDistance() < newSection.getDistance();
+    }
+
+    public boolean canAddSectionBeforeExistingDownStation(final Section newSection) {
+        return !this.getUpStation().equals(newSection.getUpStation()) &&
+                this.getDownStation().equals(newSection.getDownStation());
+    }
+
+    public boolean canAddSectionAfterExistingDownStation(final Section newSection) {
+        return !this.getUpStation().equals(newSection.getDownStation()) &&
+                this.getDownStation().equals(newSection.getUpStation());
+    }
+
+    public boolean canAddSectionAfterExistingUpStation(final Section newSection) {
+        return this.getUpStation().equals(newSection.getUpStation()) &&
+                !this.getDownStation().equals(newSection.getDownStation());
+    }
+
+    public boolean canAddSectionBeforeExistingUpStation(final Section newSection) {
+        return this.getUpStation().equals(newSection.getDownStation()) &&
+                !this.getDownStation().equals(newSection.getUpStation());
+    }
+
     public Long getId() {
         return id;
     }
